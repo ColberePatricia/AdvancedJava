@@ -1,0 +1,1 @@
+javadoc -d docs -notree -noindex -nohelp -nonavbar -author -windowtitle " - Exercise 2.2 Documentation" Duration.java
