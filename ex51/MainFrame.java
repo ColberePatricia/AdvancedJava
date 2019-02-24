@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 
 /**
  *  This class is the main frame for the RainForest application.
@@ -56,7 +57,12 @@ public class MainFrame extends JFrame {
 		
 		tabbedPane = new JTabbedPane();
 
-		musicPanel = new MusicPanel(this);
+                try {
+                    musicPanel = new MusicPanel(this);
+                } catch (IOException exc) {
+                    System.out.println("IOException caught in MainFrame(): "+exc);
+                }
+		
 		tabbedPane.addTab("Music", musicPanel);
 
 		videoPanel = new VideoPanel(this);

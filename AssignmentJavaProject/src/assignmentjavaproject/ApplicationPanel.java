@@ -16,60 +16,43 @@ import java.util.*;
  * @author Patricia
  */
 public class ApplicationPanel extends JPanel {
-    
-	/**
-	 *  The label to hold the text "Select a Music Category"
-	 */
-	protected JLabel selectionLabel;
+        
+        protected JLabel matrixLabel;
+        protected JLabel vectorLabel;
 	
-	/**
-	 *  The combo box to hold a list of music categories
-	 */
-	protected JComboBox categoryComboBox;
-	
-
 	/**
 	 *  A panel to contain components.
 	 */
 	protected JPanel topPanel;
-
 	/**
-	 * List Box for displaying the music recordings
+	 *  A panel to contain components.
 	 */
-	protected JList musicListBox;
-	
+	protected JPanel middleTopPanel;
 	/**
-	 *  Supporting scroll pane for the musicListBox
+	 *  A panel to contain components.
 	 */
-	protected JScrollPane musicScrollPane;
-	
-	/**
-	 *  Button labeled "Add"
-	 */
-	protected JButton addButton;
-
-
-	/**
-	 *  Button labeled "Save"
-	 */
-	JButton saveButton = new JButton("Save");
-
-
-	/**
-	 *  Button labeled "Clear"
-	 */
-	protected JButton clearButton;
-
-	/**
-	 *  Button labeled "Exit"
-	 */
-	protected JButton exitButton;
-
-		
+	protected JPanel middleBottomPanel;
 	/**
 	 *  A panel to contain components.
 	 */
 	protected JPanel bottomPanel;
+        
+	protected JPanel bottomAndMiddleBottomPanel;
+
+	protected JScrollPane matrixScrollPane;
+        protected JScrollPane vectorScrollPane;
+	protected JScrollPane resultScrollPane;
+	protected JScrollPane displayErrorScrollPane;
+	
+	/**
+	 *  Button labeled "Add"
+	 */
+	protected JButton LUpivotButton;
+	protected JButton inverseButton;
+	protected JButton clearButton;
+	protected JButton loadButton;
+	protected JButton saveButton;
+		
 		
 	/**
 	 *  A reference to the parent frame
@@ -79,7 +62,15 @@ public class ApplicationPanel extends JPanel {
 	/**
 	 *  A holder for the list of music recordings
 	 */
-	protected ArrayList musicArrayList;
+	protected String matrixA;
+        protected String vectorB;
+        protected String resultText;
+        
+        protected JTextArea matrixInput;
+        protected JTextArea vectorInput;
+        protected JTextArea resultOutput;
+        protected JTextArea displayError;
+        
 	
 	/**
 	 *  A reference music data accessor
@@ -97,15 +88,15 @@ public class ApplicationPanel extends JPanel {
 
 		myDataAccessor = new ResultDataAccessor();
 		
-		selectionLabel = new JLabel("Select a Music Category");
-
-		// populate category combo box		
-		categoryComboBox = new JComboBox();
-		categoryComboBox.addItem("-------");
+		matrixLabel = new JLabel("A = ");
+		vectorLabel = new JLabel("      b = ");
 		
-		ArrayList categoryArrayList = myDataAccessor.getResultName();
+                // TODO
+                // IN THE LOAD PAGE
+                /*
+		ArrayList resultNameArrayList = myDataAccessor.getResultName();
 		
-		Iterator iterator = categoryArrayList.iterator();
+		Iterator iterator = resultNameArrayList.iterator();
 		String aCategory;
 		
 		while (iterator.hasNext()) {
@@ -113,57 +104,93 @@ public class ApplicationPanel extends JPanel {
 			aCategory = (String) iterator.next();
 			categoryComboBox.addItem(aCategory);
 		}
-				
+			*/	
 		topPanel = new JPanel();
-		
-		musicListBox = new JList();
-		musicListBox.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		
-		musicScrollPane = new JScrollPane(musicListBox);
-		
-		// create the buttons for the bottom panel
-		addButton = new JButton("Add...");
-		clearButton = new JButton("Clear");
-		exitButton = new JButton("Exit");
-		
 		bottomPanel = new JPanel();
+                middleTopPanel = new JPanel();
+                middleBottomPanel = new JPanel();
+                bottomAndMiddleBottomPanel = new JPanel();
+                
+                matrixInput = new JTextArea(17,30);
+                vectorInput = new JTextArea(17,30);
+                resultOutput = new JTextArea(20,10);
+                displayError = new JTextArea(1,10);
+                
+                displayError.setEditable(false);
+				
+		matrixScrollPane = new JScrollPane(matrixInput);
+		vectorScrollPane = new JScrollPane(vectorInput);
+		resultScrollPane = new JScrollPane(resultOutput);
+		displayErrorScrollPane = new JScrollPane(displayError);
+                
+                matrixScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+                matrixScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+                vectorScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+                vectorScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+                resultScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+                resultScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+                displayErrorScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+                displayErrorScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		
+                
+		// create the buttons for the bottom panel
+		LUpivotButton = new JButton("LU pivot");
+                inverseButton = new JButton("Inverse");
+                clearButton = new JButton("Clear");
+                loadButton = new JButton("Load");
+                saveButton = new JButton("Save");
+		
 		
 		// set the layout for "this" MusicPanel
 		this.setLayout(new BorderLayout());
 		
 		// set the layout for the topPanel and add components
-		topPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-		topPanel.add(selectionLabel);
-		topPanel.add(categoryComboBox);
+		topPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+		topPanel.add(matrixLabel);
+		topPanel.add(matrixScrollPane);
+		topPanel.add(vectorLabel);
+		topPanel.add(vectorScrollPane);
 		
 		// add the top panel to the northern region of "this" MusicPanel
 		this.add(BorderLayout.NORTH, topPanel);
-		
-		// add the musicScrollPane to the center of "this" MusicPanel
-		this.add(BorderLayout.CENTER, musicScrollPane);
+		//this.add(BorderLayout.CENTER, matrixScrollPane);
+		//this.add(BorderLayout.SOUTH, vectorScrollPane);
 		
 		// set the layout for the bottomPanel and add components
-		bottomPanel.setLayout(new FlowLayout());
-		bottomPanel.add(addButton);
-		bottomPanel.add(saveButton);
-		bottomPanel.add(clearButton);
-		bottomPanel.add(exitButton);
-		
+		middleTopPanel.setLayout(new FlowLayout());
+		middleTopPanel.add(LUpivotButton);
+		middleTopPanel.add(inverseButton);
+		middleTopPanel.add(clearButton);
+                
 		// add the bottomPanel to the southern region of "this" MusicPanel
-		this.add(BorderLayout.SOUTH, bottomPanel);
+		this.add(BorderLayout.CENTER, middleTopPanel);
+                
+                
+                
+                bottomPanel.setLayout(new FlowLayout());
+                bottomPanel.add(loadButton);
+                bottomPanel.add(saveButton);
+                
+                bottomAndMiddleBottomPanel.setLayout(new BoxLayout(bottomAndMiddleBottomPanel, BoxLayout.Y_AXIS));
+                bottomAndMiddleBottomPanel.add(resultScrollPane);
+                bottomAndMiddleBottomPanel.add(displayErrorScrollPane);
+                bottomAndMiddleBottomPanel.add(bottomPanel);
+                
+		// add the bottomPanel to the southern region of "this" MusicPanel
+		this.add(BorderLayout.SOUTH, bottomAndMiddleBottomPanel);
+                
+                                
 	
 		//
 		//  REGISTER LISTENERS
 		//
-		addButton.addActionListener(new EntryActionListener());
-		saveButton.addActionListener(new SaveActionListener());
-		
-		// bonus work
+		LUpivotButton.addActionListener(new LUpivotActionListener());
+		inverseButton.addActionListener(new InverseActionListener());
 		clearButton.addActionListener(new ClearActionListener());
-		exitButton.addActionListener(new ExitActionListener());
-		categoryComboBox.addItemListener(new GoItemListener());
+		loadButton.addActionListener(new LoadActionListener());
+		saveButton.addActionListener(new SaveActionListener());
 	
-		// more bonus work - state management
+		// state management
 		clearButton.setEnabled(false);
 	}
 
@@ -182,7 +209,7 @@ public class ApplicationPanel extends JPanel {
 	 *  </pre>
 	 */
 	protected void populateListBox() {
-
+/*
 		String category = (String) categoryComboBox.getSelectedItem();
 
 		if (! category.startsWith("---")) {
@@ -202,35 +229,10 @@ public class ApplicationPanel extends JPanel {
 		}
 		else {
 			clearButton.setEnabled(false);
-		}
+		}*/
 	}
-	
-	//
-	//  INNER CLASSES
-	//
-	
-	/**
-	 *  <pre>
-	 *  
-	 *  When the go button is pressed, we will:
-	 *
-	 *  1.  Find out the selected category from combo box
-	 *  2.  Get a list of CDs for the selected category from the data accessor
-	 *  3.  Populate the list box w/ the cd artist and titles
-	 *
-	 *  </pre>
-	 */
-	class GoActionListener implements ActionListener {
-	
-		public void actionPerformed(ActionEvent event) {
-
-			// the real work occurs in the populateListBox() method.
-			populateListBox();
-		}
-	}
-	
-
-
+        
+        
 	//
 	//  BONUS WORK FOLLOWS
 	//
@@ -246,6 +248,7 @@ public class ApplicationPanel extends JPanel {
 		}
 	}
 	
+        
 	/**
 	 *  When the "Clear" button is pressed, we will:
 	 *
@@ -256,10 +259,20 @@ public class ApplicationPanel extends JPanel {
 	 *
 	 *  </pre>
 	 */
-	class ClearActionListener implements ActionListener {
+        class LUpivotActionListener implements ActionListener {
 	
 		public void actionPerformed(ActionEvent event) {
-
+		}
+	}
+        class InverseActionListener implements ActionListener {
+	
+		public void actionPerformed(ActionEvent event) {
+		}
+	}
+        class ClearActionListener implements ActionListener {
+	
+		public void actionPerformed(ActionEvent event) {
+/*
 			// create an empty array
 			Object[] noData = new Object[1];
 
@@ -267,7 +280,34 @@ public class ApplicationPanel extends JPanel {
 			musicListBox.setListData(noData);
 
 			// set the first category item as selected
-			categoryComboBox.setSelectedIndex(0);
+			categoryComboBox.setSelectedIndex(0);*/
+		}
+	}
+        class LoadActionListener implements ActionListener {
+	
+		public void actionPerformed(ActionEvent event) {
+		}
+	}
+	/**
+	 *  When the "Save" button is pressed, we will:
+	 *
+	 *  <pre>
+	 *
+	 *  1.  Call the save() method of our data accessor.
+	 *  2.  If any problems occur during the save then we'll report
+	 *      them to the user.
+	 *
+	 *  </pre>
+	 */
+	class SaveActionListener implements ActionListener {
+
+		public void actionPerformed(ActionEvent event) {
+                    try{
+                        myDataAccessor.save();
+                    } catch (IOException exc) {
+                        System.out.println("IOException caught in save(): "+exc);
+		}
+                    
 		}
 	}
 
@@ -334,27 +374,6 @@ public class ApplicationPanel extends JPanel {
 	}
 
 
-	/**
-	 *  When the "Save" button is pressed, we will:
-	 *
-	 *  <pre>
-	 *
-	 *  1.  Call the save() method of our data accessor.
-	 *  2.  If any problems occur during the save then we'll report
-	 *      them to the user.
-	 *
-	 *  </pre>
-	 */
-	class SaveActionListener implements ActionListener {
-
-		public void actionPerformed(ActionEvent event) {
-                    try{
-                        myDataAccessor.save();
-                    } catch (IOException exc) {
-                        System.out.println("IOException caught in save(): "+exc);
-		}
-                    
-		}
-	}
+	
 
 }
