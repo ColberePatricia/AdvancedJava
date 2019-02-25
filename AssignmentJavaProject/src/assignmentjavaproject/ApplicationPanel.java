@@ -59,12 +59,6 @@ public class ApplicationPanel extends JPanel {
 	 */
 	protected MainFrame parentFrame;
 
-	/**
-	 *  A holder for the list of music recordings
-	 */
-	protected String matrixA;
-        protected String vectorB;
-        protected String resultText;
         
         protected JTextArea matrixInput;
         protected JTextArea vectorInput;
@@ -116,7 +110,9 @@ public class ApplicationPanel extends JPanel {
                 resultOutput = new JTextArea(20,10);
                 displayError = new JTextArea(1,10);
                 
+                
                 displayError.setEditable(false);
+                displayError.setBackground(Color.LIGHT_GRAY);
 				
 		matrixScrollPane = new JScrollPane(matrixInput);
 		vectorScrollPane = new JScrollPane(vectorInput);
@@ -189,9 +185,12 @@ public class ApplicationPanel extends JPanel {
 		clearButton.addActionListener(new ClearActionListener());
 		loadButton.addActionListener(new LoadActionListener());
 		saveButton.addActionListener(new SaveActionListener());
+                
+                //matrixInput.getDocument().addDocumentListener(new MatrixInputDocumentListener(matrixInput));
 	
 		// state management
 		clearButton.setEnabled(false);
+                saveButton.setEnabled(false);
 	}
 
 	
@@ -232,11 +231,30 @@ public class ApplicationPanel extends JPanel {
 		}*/
 	}
         
+        /*
+	class MatrixInputDocumentListener implements DocumentListener {
+            protected JTextArea jtext;
+            public MatrixInputDocumentListener(JTextArea myJtext) {
+                super();
+                jtext = myJtext;
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                System.out.println("REMOVING: "+jtext.getText());
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                System.out.println("INSERTING: "+jtext.getText());
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent arg0) {
+            }
+        }
+	*/
         
-	//
-	//  BONUS WORK FOLLOWS
-	//
-	
 	/**
 	 *  When called, let's call the exit routine of the parent frame
 	 */
@@ -262,25 +280,36 @@ public class ApplicationPanel extends JPanel {
         class LUpivotActionListener implements ActionListener {
 	
 		public void actionPerformed(ActionEvent event) {
+                    // We calculate the LU pivot and we add our result to the output
+                    resultOutput.setText("LU Decomposition with scaled partial pivoting\nOriginal matrix\n");
+                    // We write the original matrix to the output
+                    String originalMatrix="";
+                    
+                    resultOutput.append(originalMatrix+"\n\nOriginal vector");
+                    
+                    // We write the original
+                    clearButton.setEnabled(true);
+                    saveButton.setEnabled(true);
 		}
 	}
         class InverseActionListener implements ActionListener {
 	
 		public void actionPerformed(ActionEvent event) {
+                    // We calculate the inverse and we add our result to the output
+                    resultOutput.setText("Inverse");
+                    clearButton.setEnabled(true);
+                    saveButton.setEnabled(true);
 		}
 	}
         class ClearActionListener implements ActionListener {
 	
 		public void actionPerformed(ActionEvent event) {
-/*
-			// create an empty array
-			Object[] noData = new Object[1];
 
-			// this will clear out the list			
-			musicListBox.setListData(noData);
-
-			// set the first category item as selected
-			categoryComboBox.setSelectedIndex(0);*/
+			// clear the text in the result output
+			resultOutput.setText("");
+                        clearButton.setEnabled(false);
+                        saveButton.setEnabled(false);
+                        
 		}
 	}
         class LoadActionListener implements ActionListener {
@@ -304,6 +333,8 @@ public class ApplicationPanel extends JPanel {
 		public void actionPerformed(ActionEvent event) {
                     try{
                         myDataAccessor.save();
+                        // If the result has been correctly saved, there is no need for now to use the save button again
+                        saveButton.setEnabled(false);
                     } catch (IOException exc) {
                         System.out.println("IOException caught in save(): "+exc);
 		}
