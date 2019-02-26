@@ -117,4 +117,18 @@ public class Matrix {
         
         return result;
     }
+    
+    public static void printVector(double[]vector){
+            for (int i=0;i<vector.length;i++){
+                System.out.print(vector[i]+" ");
+            }
+            System.out.println();
+        }
+        
+        public static void printMatrix(Matrix myMatrix){
+            for (int i=0;i<myMatrix.numRows;i++){
+                printVector(myMatrix.matrix[i]);
+            }
+            System.out.println();
+        }
 }

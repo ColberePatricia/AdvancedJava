@@ -193,19 +193,6 @@ public class ApplicationPanel extends JPanel {
                 saveButton.setEnabled(false);
 	}
         
-        public static void printVector(double[]vector, int vectorSize){
-            for (int i=0;i<vectorSize;i++){
-                System.out.print(vector[i]+" ");
-            }
-            System.out.println();
-        }
-        
-        public static void printMatrix(double[][]matrix, int rowSize, int columnSize){
-            for (int i=0;i<rowSize;i++){
-                printVector(matrix[i], columnSize);
-            }
-            System.out.println();
-        }
 
 	
 	/**
