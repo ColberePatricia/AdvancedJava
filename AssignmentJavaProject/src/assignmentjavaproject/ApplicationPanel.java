@@ -284,22 +284,86 @@ public class ApplicationPanel extends JPanel {
                     // We calculate the LU pivot and we add our result to the output
                     resultOutput.setText("LU Decomposition with scaled partial pivoting\nOriginal matrix\n");
                     // We write the original matrix to the output
-                    String originalMatrix="";
+                    String originalMatrixString=matrixInput.getText();
+                    Matrix originalMatrix=Matrix.getMatrixFromString(originalMatrixString);
+                    // We check that the format of the matrix is correct, else we show an error message
+                    if (!originalMatrix.Equals(new Matrix(999))){
+                        resultOutput.append(Matrix.MatrixToString(originalMatrix)+"\n\nOriginal vector\n");
+                        String originalVectorString=vectorInput.getText();
+                        double[] originalVector = Matrix.getVectorFromString(originalVectorString);
+
+                        // We write the original vector to the output
+                        resultOutput.append(Matrix.VectorToString(originalVector)+"\n\nLower matrix\n");
+                        
+                        // We check that the vector and the matrix have compatible formats, else we show an error message
+                        if(originalMatrix.areFormatsCompatible(originalVector)){
+                            Matrix lowerMatrix = new Matrix(4,3);
+                            // We write the lower matrix to the output
+                            resultOutput.append(Matrix.MatrixToString(lowerMatrix)+"Upper matrix\n");
+
+                            Matrix upperMatrix = new Matrix(4,3);
+                            // We write the upper matrix to the output
+                            resultOutput.append(Matrix.MatrixToString(upperMatrix)+"Solution\n");
+
+                            double[] solution = new double[3];
+                            resultOutput.append(Matrix.VectorToString(solution)+"\nDeterminant = ");
+
+                            double determinant = 0.0;
+                            resultOutput.append(determinant + "\n");
+
+
+                            clearButton.setEnabled(true);
+                            saveButton.setEnabled(true);
+                        } else {
+                            resultOutput.setText("Input a matrix with a format compatible to the vector!\n");
+                            clearButton.setEnabled(true);
+                            saveButton.setEnabled(false);
+                        }
+                        
+                    } else{
+                        resultOutput.setText("Input a matrix with the right format!\nSeparate each number by a single space and begin each line with a number.\nInput a consistant number of rows and of columns for the matrix.\n");
+                        clearButton.setEnabled(true);
+                        saveButton.setEnabled(false);
+                    }
                     
-                    resultOutput.append(originalMatrix+"\n\nOriginal vector");
-                    
-                    // We write the original
-                    clearButton.setEnabled(true);
-                    saveButton.setEnabled(true);
 		}
 	}
         class InverseActionListener implements ActionListener {
 	
 		public void actionPerformed(ActionEvent event) {
                     // We calculate the inverse and we add our result to the output
-                    resultOutput.setText("Inverse");
-                    clearButton.setEnabled(true);
-                    saveButton.setEnabled(true);
+                    resultOutput.setText("Matrix Inversion\nOriginal matrix\n");
+                    // We write the original matrix to the output
+                    String originalMatrixString=matrixInput.getText();
+                    Matrix originalMatrix=Matrix.getMatrixFromString(originalMatrixString);
+                    // We check that the format of the matrix is correct, else we show an error message
+                    if (!originalMatrix.Equals(new Matrix(999))){
+                        resultOutput.append(Matrix.MatrixToString(originalMatrix)+"\n\nLower matrix\n");
+                    
+                        Matrix lowerMatrix = new Matrix(4,3);
+                        // We write the lower matrix to the output
+                        resultOutput.append(Matrix.MatrixToString(lowerMatrix)+"Upper matrix\n");
+
+                        Matrix upperMatrix = new Matrix(4,3);
+                        // We write the upper matrix to the output
+                        resultOutput.append(Matrix.MatrixToString(upperMatrix)+"Inverse matrix\n");
+
+                        Matrix inverseMatrix = new Matrix(4,3);
+                        resultOutput.append(Matrix.MatrixToString(inverseMatrix)+"\nDeterminant = ");
+
+                        double determinant = 0.0;
+                        resultOutput.append(determinant + "\n");
+
+
+                        clearButton.setEnabled(true);
+                        saveButton.setEnabled(true);
+                    } else{
+                        resultOutput.setText("Input a matrix with the right format!\nSeparate each number by a single space and begin each line with a number.\nInput a consistant number of rows and of columns for the matrix.\n");
+                        clearButton.setEnabled(true);
+                        saveButton.setEnabled(false);
+                    }
+                    
+                    
 		}
 	}
         class ClearActionListener implements ActionListener {

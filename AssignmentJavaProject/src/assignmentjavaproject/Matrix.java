@@ -91,6 +91,7 @@ public class Matrix {
             // Show an error message
             // TO DO
             System.out.println("The formats of the matrix and vector do not correspond");
+            return new double[999];
         }
         
         result = new double[numRows];
@@ -118,17 +119,104 @@ public class Matrix {
         return result;
     }
     
-    public static void printVector(double[]vector){
-            for (int i=0;i<vector.length;i++){
-                System.out.print(vector[i]+" ");
+    public boolean Equals(Matrix myMatrix){
+        // The matrices should have the same number of rows and columns
+        if (numRows != myMatrix.numRows || numCols != myMatrix.numCols)
+            return false;
+        
+        // The matrices should have the same values
+        for (int i=0;i<numRows;i++){
+            for (int j=0;j<numCols;j++){
+                if (matrix[i][j]!=myMatrix.matrix[i][j]){
+                    return false;
+                }
             }
-            System.out.println();
+        }
+        return true;
+    }
+    
+    // Returns true if the matrix and vector have compatible formats
+    public boolean areFormatsCompatible(double[] myVector){
+        // If the matrix and vector sizes do not match
+        if (numCols != myVector.length){
+            System.out.println("The formats of the matrix and vector do not correspond");
+            return false;
         }
         
-        public static void printMatrix(Matrix myMatrix){
-            for (int i=0;i<myMatrix.numRows;i++){
-                printVector(myMatrix.matrix[i]);
+        return true;
+    }
+    
+    public static void PrintVector(double[]vector){
+            for (int i=0;i<vector.length;i++){
+                System.out.print(vector[i]+"   ");
             }
             System.out.println();
+    }
+        
+    public static void PrintMatrix(Matrix myMatrix){
+            for (int i=0;i<myMatrix.numRows;i++){
+                PrintVector(myMatrix.matrix[i]);
+            }
+            System.out.println();
+    }
+    
+    public static String VectorToString(double [] vector){
+        String result="";
+        for (int i=0;i<vector.length;i++){
+                result+=vector[i]+"   ";
         }
+        result+="\n";
+        return result;
+    }
+    
+    public static String MatrixToString(Matrix myMatrix){
+        String result = "";
+        for (int i=0;i<myMatrix.numRows;i++){
+                result += VectorToString(myMatrix.matrix[i]);
+        }
+        result+="\n";
+        return result;
+    }
+    
+    // We get an array of doubles from a string input in the GUI
+    public static double[] getVectorFromString(String vectorString){
+        String [] resultString = vectorString.split(" ");
+        double [] result = new double[resultString.length];
+        for (int i=0;i<resultString.length;i++)
+            result[i]=Double.parseDouble(resultString[i]);
+        
+        return result;
+    }
+    
+    // We get a matrix object from a string input in the GUI
+    public static Matrix getMatrixFromString(String matrixString){
+        Matrix myMatrix = new Matrix(999);
+        String[] lines = matrixString.split("\r\n|\r|\n");
+        // We get the number of rows and columns of the matrix
+        int numRowsM = lines.length;
+        int numColsM = lines[0].split(" ").length;
+        
+        // We check that the matrix is in a correct format, each rows should have
+        // the same number of columns, if the format is incorrect we return
+        // a matrix of size (999,999) full of zeroes and print an error
+        for (int i=0; i<numRowsM;i++){
+            if (numColsM != lines[i].split(" ").length){
+                System.out.println("The matrix has an incorrect format!");
+                return myMatrix;
+            }
+        }
+        
+        // We put the right size to the matrix
+        myMatrix = new Matrix(numRowsM, numColsM);
+        // This will contain the values of the current line in the loop
+        String []arrayOfCurrentLine;
+        for (int i=0;i<numRowsM;i++){
+            arrayOfCurrentLine = lines[i].split(" ");
+            for (int j=0;j<numColsM;j++){
+                myMatrix.matrix[i][j] = Double.parseDouble(arrayOfCurrentLine[j]);
+            }
+        }
+        
+        return myMatrix;
+    }
 }
