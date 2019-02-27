@@ -291,34 +291,43 @@ public class ApplicationPanel extends JPanel {
                         resultOutput.append(Matrix.MatrixToString(originalMatrix)+"\n\nOriginal vector\n");
                         String originalVectorString=vectorInput.getText();
                         double[] originalVector = Matrix.getVectorFromString(originalVectorString);
-
-                        // We write the original vector to the output
-                        resultOutput.append(Matrix.VectorToString(originalVector)+"\n\nLower matrix\n");
                         
-                        // We check that the vector and the matrix have compatible formats, else we show an error message
-                        if(originalMatrix.areFormatsCompatible(originalVector)){
-                            Matrix lowerMatrix = new Matrix(4,3);
-                            // We write the lower matrix to the output
-                            resultOutput.append(Matrix.MatrixToString(lowerMatrix)+"Upper matrix\n");
+                        // We check that the vector is not empty
+                        if (!originalVector.equals(new double[999])){
+                            // We write the original vector to the output
+                            resultOutput.append(Matrix.VectorToString(originalVector)+"\n\nLower matrix\n");
 
-                            Matrix upperMatrix = new Matrix(4,3);
-                            // We write the upper matrix to the output
-                            resultOutput.append(Matrix.MatrixToString(upperMatrix)+"Solution\n");
+                            // We check that the vector and the matrix have compatible formats, else we show an error message
+                            if(originalMatrix.areFormatsCompatible(originalVector)){
+                                Matrix lowerMatrix = new Matrix(4,3);
+                                // We write the lower matrix to the output
+                                resultOutput.append(Matrix.MatrixToString(lowerMatrix)+"Upper matrix\n");
 
-                            double[] solution = new double[3];
-                            resultOutput.append(Matrix.VectorToString(solution)+"\nDeterminant = ");
+                                Matrix upperMatrix = new Matrix(4,3);
+                                // We write the upper matrix to the output
+                                resultOutput.append(Matrix.MatrixToString(upperMatrix)+"Solution\n");
 
-                            double determinant = 0.0;
-                            resultOutput.append(determinant + "\n");
+                                double[] solution = new double[3];
+                                resultOutput.append(Matrix.VectorToString(solution)+"\nDeterminant = ");
+
+                                double determinant = 0.0;
+                                resultOutput.append(determinant + "\n");
 
 
-                            clearButton.setEnabled(true);
-                            saveButton.setEnabled(true);
+                                clearButton.setEnabled(true);
+                                saveButton.setEnabled(true);
+                            } else {
+                                resultOutput.setText("Input a matrix with a format compatible to the vector!\n");
+                                clearButton.setEnabled(true);
+                                saveButton.setEnabled(false);
+                            }
                         } else {
-                            resultOutput.setText("Input a matrix with a format compatible to the vector!\n");
+                            resultOutput.setText("Input a vector!\n");
                             clearButton.setEnabled(true);
                             saveButton.setEnabled(false);
                         }
+
+                        
                         
                     } else{
                         resultOutput.setText("Input a matrix with the right format!\nSeparate each number by a single space and begin each line with a number.\nInput a consistant number of rows and of columns for the matrix.\n");

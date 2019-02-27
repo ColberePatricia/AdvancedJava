@@ -180,6 +180,9 @@ public class Matrix {
     
     // We get an array of doubles from a string input in the GUI
     public static double[] getVectorFromString(String vectorString){
+        if (vectorString.length()==0){
+            return new double[999];
+        }
         String [] resultString = vectorString.split(" ");
         double [] result = new double[resultString.length];
         for (int i=0;i<resultString.length;i++)
@@ -191,6 +194,9 @@ public class Matrix {
     // We get a matrix object from a string input in the GUI
     public static Matrix getMatrixFromString(String matrixString){
         Matrix myMatrix = new Matrix(999);
+        if (matrixString.length()==0){
+            return myMatrix;
+        }
         String[] lines = matrixString.split("\r\n|\r|\n");
         // We get the number of rows and columns of the matrix
         int numRowsM = lines.length;
@@ -218,5 +224,40 @@ public class Matrix {
         }
         
         return myMatrix;
+    }
+    
+    public Matrix getUpperMatrix(){
+        Matrix upperMatrix;
+        
+        
+        return upperMatrix;
+    }
+    
+    public Matrix getLowerMatrix(){
+        Matrix lowerMatrix;
+        
+        
+        return lowerMatrix;
+    }
+    
+    public double[] getLUsolution(double[] vector){
+        double []solution;
+        
+        
+        return solution;
+    }
+    
+    public Matrix getInverseMatrix(){
+        Matrix inverse;
+        
+        
+        return inverse;
+    }
+    
+    public double getDeterminant(){
+        double determinant;
+        
+        
+        return determinant;
     }
 }
