@@ -299,23 +299,36 @@ public class ApplicationPanel extends JPanel {
 
                             // We check that the vector and the matrix have compatible formats, else we show an error message
                             if(originalMatrix.areFormatsCompatible(originalVector)){
-                                Matrix lowerMatrix = new Matrix(4,3);
-                                // We write the lower matrix to the output
-                                resultOutput.append(Matrix.MatrixToString(lowerMatrix)+"Upper matrix\n");
+                                // We get the matrix P
+                                Matrix p = originalMatrix.reorder();
+                                Matrix PA = p.MultiplyMatrix(originalMatrix);
+                                Matrix lowerMatrix = PA.getLowerMatrix();
+                                Matrix upperMatrix = PA.getUpperMatrix();
+                                // We check that the pivots were found and so that the lower and upper matrices were calculated
+                                if (!lowerMatrix.Equals(new Matrix(999)) && !upperMatrix.Equals(new Matrix(999))){
+                                    // We write the lower matrix to the output
+                                    resultOutput.append(Matrix.MatrixToString(lowerMatrix)+"Upper matrix\n");
 
-                                Matrix upperMatrix = new Matrix(4,3);
-                                // We write the upper matrix to the output
-                                resultOutput.append(Matrix.MatrixToString(upperMatrix)+"Solution\n");
+                                    // We write the upper matrix to the output
+                                    resultOutput.append(Matrix.MatrixToString(upperMatrix)+"Solution\n");
 
-                                double[] solution = new double[3];
-                                resultOutput.append(Matrix.VectorToString(solution)+"\nDeterminant = ");
+                                    double[] PB = p.MultiplyVector(originalVector);
+                                    double[] solution = originalMatrix.getLUsolution(lowerMatrix, upperMatrix, PB);
+                                    
+                                    resultOutput.append(Matrix.VectorToString(solution)+"\nDeterminant = ");
 
-                                double determinant = 0.0;
-                                resultOutput.append(determinant + "\n");
+                                    double determinant = originalMatrix.getDeterminant();
+                                    resultOutput.append(determinant + "\n");
 
 
-                                clearButton.setEnabled(true);
-                                saveButton.setEnabled(true);
+                                    clearButton.setEnabled(true);
+                                    saveButton.setEnabled(true);
+                                } else {
+                                    resultOutput.setText("Zero pivot found for the lower and upper matrices!\n");
+                                    clearButton.setEnabled(true);
+                                    saveButton.setEnabled(false);
+                                }
+                                
                             } else {
                                 resultOutput.setText("Input a matrix with a format compatible to the vector!\n");
                                 clearButton.setEnabled(true);
@@ -330,7 +343,7 @@ public class ApplicationPanel extends JPanel {
                         
                         
                     } else{
-                        resultOutput.setText("Input a matrix with the right format!\nSeparate each number by a single space and begin each line with a number.\nInput a consistant number of rows and of columns for the matrix.\n");
+                        resultOutput.setText("Input a matrix with the right format!\nSeparate each number by a single space and begin each line with a number.\nInput a consistant and same number of rows and of columns for the matrix.\n");
                         clearButton.setEnabled(true);
                         saveButton.setEnabled(false);
                     }
@@ -349,25 +362,35 @@ public class ApplicationPanel extends JPanel {
                     if (!originalMatrix.Equals(new Matrix(999))){
                         resultOutput.append(Matrix.MatrixToString(originalMatrix)+"\n\nLower matrix\n");
                     
-                        Matrix lowerMatrix = new Matrix(4,3);
-                        // We write the lower matrix to the output
-                        resultOutput.append(Matrix.MatrixToString(lowerMatrix)+"Upper matrix\n");
+                        // We get the matrix P
+                        Matrix p = originalMatrix.reorder();
+                        Matrix PA = p.MultiplyMatrix(originalMatrix);
+                        Matrix lowerMatrix = PA.getLowerMatrix();
+                        Matrix upperMatrix = PA.getUpperMatrix();
+                        // We check that the pivots were found and so that the lower and upper matrices were calculated
+                        if (!lowerMatrix.Equals(new Matrix(999)) && !upperMatrix.Equals(new Matrix(999))){
+                            // We write the lower matrix to the output
+                            resultOutput.append(Matrix.MatrixToString(lowerMatrix)+"Upper matrix\n");
 
-                        Matrix upperMatrix = new Matrix(4,3);
-                        // We write the upper matrix to the output
-                        resultOutput.append(Matrix.MatrixToString(upperMatrix)+"Inverse matrix\n");
+                            // We write the upper matrix to the output
+                            resultOutput.append(Matrix.MatrixToString(upperMatrix)+"Inverse matrix\n");
 
-                        Matrix inverseMatrix = new Matrix(4,3);
-                        resultOutput.append(Matrix.MatrixToString(inverseMatrix)+"\nDeterminant = ");
+                            Matrix inverseMatrix = originalMatrix.getInverseMatrix(lowerMatrix, upperMatrix, p);
+                            resultOutput.append(Matrix.MatrixToString(inverseMatrix)+"\nDeterminant = ");
 
-                        double determinant = 0.0;
-                        resultOutput.append(determinant + "\n");
+                            double determinant = originalMatrix.getDeterminant();
+                            resultOutput.append(determinant + "\n");
 
 
-                        clearButton.setEnabled(true);
-                        saveButton.setEnabled(true);
-                    } else{
-                        resultOutput.setText("Input a matrix with the right format!\nSeparate each number by a single space and begin each line with a number.\nInput a consistant number of rows and of columns for the matrix.\n");
+                            clearButton.setEnabled(true);
+                            saveButton.setEnabled(true);
+                        } else{
+                            resultOutput.setText("Zero pivot found for the lower and upper matrices!\nThe inverse does not exist!\n");
+                            clearButton.setEnabled(true);
+                            saveButton.setEnabled(false);
+                        }
+                    } else {
+                        resultOutput.setText("Input a matrix with the right format!\nSeparate each number by a single space and begin each line with a number.\nInput a consistant and same number of rows and of columns for the matrix.\n");
                         clearButton.setEnabled(true);
                         saveButton.setEnabled(false);
                     }
