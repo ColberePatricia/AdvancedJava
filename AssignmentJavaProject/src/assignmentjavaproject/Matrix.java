@@ -5,6 +5,7 @@
  */
 package assignmentjavaproject;
 import java.lang.Math.*;
+import java.text.DecimalFormat;
 /**
  *
  * @author Patricia
@@ -161,9 +162,11 @@ public class Matrix {
     }
     
     public static String VectorToString(double [] vector){
-        String result="";
+        // We want a precision of 7 decimals
+        DecimalFormat dc = new DecimalFormat("0.0000000");
+        String result="    ";
         for (int i=0;i<vector.length;i++){
-                result+=vector[i]+"   ";
+                result+=dc.format(vector[i])+"   ";
         }
         result+="\n";
         return result;

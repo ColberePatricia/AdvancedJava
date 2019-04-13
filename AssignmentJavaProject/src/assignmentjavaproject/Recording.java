@@ -5,6 +5,7 @@
  */
 package assignmentjavaproject;
 import java.util.*;
+import java.text.*;
 
 /**
  *
@@ -20,17 +21,13 @@ public class Recording implements Comparable {
 	 *  The recording title 
 	 */
 	protected String name;
-
-	/**
-	 *  The recording category
-	 */
-	protected int numberOfLines;
 	
-	/**
-	 *  The recording image name
+        /**
+	 *  The recording content 
 	 */
-	protected String resultContent;
-	
+	protected String content;
+        
+        
 	//
 	//  CONSTRUCTORS
 	//
@@ -40,17 +37,21 @@ public class Recording implements Comparable {
 	 */
 	public Recording() {
 		// default constructor
+                DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                Date date = new Date();
+                name = dateFormat.format(date);
 	}
 
 	
 	/**
 	 *  Constructs a recording w/ given parameter values
 	 */
-	public Recording(String theName, int theNumberOfLines, String theResultContent) {
+	public Recording(String theContent) {
 	
-		name = theName;
-		numberOfLines = theNumberOfLines;
-		resultContent = theResultContent;
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                Date date = new Date();
+                name = dateFormat.format(date);
+		content = theContent;
 	}
 
 	//
@@ -73,32 +74,17 @@ public class Recording implements Comparable {
 
 
 	/**
-	 *  Returns the recording price
+	 *  Returns the content
 	 */
-	public int getNumberOfLines() {
-		return numberOfLines;
+	public String getContent() {
+		return content;
 	}
 	
 	/**
 	 *  Sets the recording price
 	 */
-	public void setNumberOfLines(int theNumberOfLines) {
-		numberOfLines = theNumberOfLines;
-	}
-
-
-	/**
-	 *  Returns the recording category
-	 */
-	public String getResultContent() {
-		return resultContent;
-	}
-	
-	/**
-	 *  Sets the recording category
-	 */
-	public void setCategory(String theResultContent) {
-		resultContent = theResultContent;
+	public void setContent(String theContent) {
+		content = theContent;
 	}
 
 	/** 
@@ -114,11 +100,10 @@ public class Recording implements Comparable {
         
         
 	/**
-	 *  Returns the artist name and title of recording
+	 *  Returns the content
 	 */
 	public String toString() {
-		//return name + ", " + numberOfLines + "\n" + resultContent;
-                return name;
+		return content;
 	}
 	
 }

@@ -26,7 +26,8 @@ import java.io.IOException;
  *       |              _______                |
  *       |             |Results|               |
  *       |           Error display             |
- *       |          Load       Save            |
+ *       |   ________________                  |
+ *       |  |Result to load|v|   Load   Save   |
  *       |_____________________________________|
  * 
  *  </pre>

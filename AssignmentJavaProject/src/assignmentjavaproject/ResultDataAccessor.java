@@ -96,17 +96,15 @@ public class ResultDataAccessor extends DataAccessor {
 				// create a tokenizer for a comma delimited line
 				st = new StringTokenizer(line, ",");
 		
-				//  Parse the info line to read following items
-				//  -  the artist, title, category, imageName, number of tracks
+				//  Parse the info line to read the title
 				//
 				resultName = st.nextToken().trim();
-                                numberOfLines = Integer.parseInt(st.nextToken().trim());
 						
-				// read all of the tracks in
-				resultContent = readResultContent(inputFromFile, numberOfLines);
+				// read the content
+				resultContent = readResultContent(inputFromFile);
 
 				// create the music recording
-				myRecording = new Recording(resultName, numberOfLines, resultContent);
+				myRecording = new Recording(resultContent);
 				
                                 
 				// check to see if we have information on this category
@@ -165,17 +163,17 @@ public class ResultDataAccessor extends DataAccessor {
      *
 	 *  @exception IOException thrown if error occurs during IO
 	 */
-	protected String readResultContent(BufferedReader inputFromFile, int numberOfLines) 
+	protected String readResultContent(BufferedReader inputFromFile) 
 		throws IOException
 	{
 		String resultContent = "";
 		
 		
-		for (int i=0; i < numberOfLines; i++)
-		{
+		//for (int i=0; i < numberOfLines; i++)
+		//{
 			resultContent += inputFromFile.readLine()+"\n";
 
-		}	
+		//}	
 		
 		return resultContent;
 	}
@@ -185,7 +183,7 @@ public class ResultDataAccessor extends DataAccessor {
 	/**
 	 *  Saves the data to a storage device.  <p>
 	 *
-	 *  <b><i> NOTE: This method is left an exercise for the student.  </i><b><br>
+	 *
 	 *
 	 *
 	 *  @exception IOException thrown if error occurs during IO
@@ -204,7 +202,7 @@ public class ResultDataAccessor extends DataAccessor {
 			Recording tempRecording = null;
 
 
-			//  TO DO: create a FileWriter for the file "music.db" and set append to true			
+			//  TO DO: create a FileWriter for the file "result.db" and set append to true			
 			Boolean append = true;
                         FileWriter myFileWriter = new FileWriter("result.db", append);
 			
@@ -236,8 +234,7 @@ public class ResultDataAccessor extends DataAccessor {
 				//   
 				//
 				outputToFile.print(tempRecording.getName() + ", ");
-				outputToFile.print(tempRecording.getNumberOfLines()+ "\n");
-				outputToFile.print(tempRecording.getResultContent()+ "\n");
+				outputToFile.print(tempRecording.getContent()+ "\n");
 				
 				// GIVEN:  Print the record separator
 				outputToFile.println(RECORD_SEPARATOR);
@@ -263,6 +260,25 @@ public class ResultDataAccessor extends DataAccessor {
 	// IMPORTANT:  REMOVE THE "END" COMMENT TAG ON THE LINE BELOW
 	
 	
+	}
+        
+        /**
+	 *  Returns a sorted list of the categories for the recordings.
+	 */
+	public ArrayList getResultsList() {
+	
+		Set resultSet = dataTable.keySet();
+		
+		log("Getting the results...");
+
+		ArrayList results = new ArrayList(resultSet);
+
+		// sort the list first
+		Collections.sort(results);
+		
+		log("getResults complete!\n");
+		
+		return results;		
 	}
         
 }

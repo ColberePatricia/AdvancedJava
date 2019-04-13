@@ -52,7 +52,16 @@ public class ApplicationPanel extends JPanel {
 	protected JButton clearButton;
 	protected JButton loadButton;
 	protected JButton saveButton;
+        
+        /**
+	 *  A holder for the list of recordings
+	 */
+	protected ArrayList resultArrayList;
 		
+        /**
+	 *  The combo box to hold a list of results
+	 */
+	protected JComboBox resultComboBox;
 		
 	/**
 	 *  A reference to the parent frame
@@ -85,30 +94,33 @@ public class ApplicationPanel extends JPanel {
 		matrixLabel = new JLabel("A = ");
 		vectorLabel = new JLabel("      b = ");
 		
-                // TODO
-                // IN THE LOAD PAGE
-                /*
-		ArrayList resultNameArrayList = myDataAccessor.getResultName();
+               	
+                // populate result combo box		
+		resultComboBox = new JComboBox();
+		resultComboBox.addItem("-------");
+                
+                resultArrayList = myDataAccessor.getResultsList();
 		
-		Iterator iterator = resultNameArrayList.iterator();
-		String aCategory;
+		Iterator iterator = resultArrayList.iterator();
+		String aResult;
 		
 		while (iterator.hasNext()) {
 			
-			aCategory = (String) iterator.next();
-			categoryComboBox.addItem(aCategory);
+			aResult = (String) iterator.next();
+			resultComboBox.addItem(aResult);
 		}
-			*/	
+                
 		topPanel = new JPanel();
 		bottomPanel = new JPanel();
                 middleTopPanel = new JPanel();
                 middleBottomPanel = new JPanel();
                 bottomAndMiddleBottomPanel = new JPanel();
+                resultArrayList = new ArrayList();
                 
                 matrixInput = new JTextArea(17,30);
                 vectorInput = new JTextArea(17,30);
                 resultOutput = new JTextArea(20,10);
-                displayError = new JTextArea(1,10);
+                displayError = new JTextArea(3,10);
                 
                 
                 displayError.setEditable(false);
@@ -137,7 +149,7 @@ public class ApplicationPanel extends JPanel {
                 saveButton = new JButton("Save");
 		
 		
-		// set the layout for "this" MusicPanel
+		// set the layout for "this" Panel
 		this.setLayout(new BorderLayout());
 		
 		// set the layout for the topPanel and add components
@@ -164,6 +176,7 @@ public class ApplicationPanel extends JPanel {
                 
                 
                 bottomPanel.setLayout(new FlowLayout());
+                bottomPanel.add(resultComboBox);
                 bottomPanel.add(loadButton);
                 bottomPanel.add(saveButton);
                 
@@ -185,6 +198,7 @@ public class ApplicationPanel extends JPanel {
 		clearButton.addActionListener(new ClearActionListener());
 		loadButton.addActionListener(new LoadActionListener());
 		saveButton.addActionListener(new SaveActionListener());
+		resultComboBox.addItemListener(new GoItemListener());
                 
                 //matrixInput.getDocument().addDocumentListener(new MatrixInputDocumentListener(matrixInput));
 	
@@ -208,28 +222,24 @@ public class ApplicationPanel extends JPanel {
 	 *
 	 *  </pre>
 	 */
-	protected void populateListBox() {
-/*
-		String category = (String) categoryComboBox.getSelectedItem();
+	protected void populateOutput() {
 
-		if (! category.startsWith("---")) {
-			musicArrayList = myDataAccessor.getRecordings(category);
+		String result = (String) resultComboBox.getSelectedItem();
+
+		if (! result.startsWith("---")) {
+			resultArrayList = myDataAccessor.getRecordings(result);
 		}
 		else {
-			musicArrayList = new ArrayList(); 
+			resultArrayList = new ArrayList(); 
 		}
 
-		Object[] theData = musicArrayList.toArray();
-		musicListBox.setListData(theData);	
+		Object[] theData = resultArrayList.toArray();
+		resultOutput.setText(""+theData[0]);	
 				
-		// bonus work
 		// clear button is enabled if we have some data
-		if (musicArrayList.size() > 0) {
+		if (resultArrayList.size() > 0) {
 			clearButton.setEnabled(true);
 		}
-		else {
-			clearButton.setEnabled(false);
-		}*/
 	}
         
         /*
@@ -319,23 +329,27 @@ public class ApplicationPanel extends JPanel {
 
                                     double determinant = originalMatrix.getDeterminant();
                                     resultOutput.append(determinant + "\n");
+                                    displayError.setText("");
 
 
                                     clearButton.setEnabled(true);
                                     saveButton.setEnabled(true);
                                 } else {
-                                    resultOutput.setText("Zero pivot found for the lower and upper matrices!\n");
+                                    resultOutput.setText("");
+                                    displayError.setText("Zero pivot found for the lower and upper matrices!\n");
                                     clearButton.setEnabled(true);
                                     saveButton.setEnabled(false);
                                 }
                                 
                             } else {
-                                resultOutput.setText("Input a matrix with a format compatible to the vector!\n");
+                                resultOutput.setText("");
+                                displayError.setText("Input a matrix with a format compatible to the vector!\n");
                                 clearButton.setEnabled(true);
                                 saveButton.setEnabled(false);
                             }
                         } else {
-                            resultOutput.setText("Input a vector!\n");
+                            resultOutput.setText("");
+                            displayError.setText("Input a vector!\n");
                             clearButton.setEnabled(true);
                             saveButton.setEnabled(false);
                         }
@@ -343,7 +357,8 @@ public class ApplicationPanel extends JPanel {
                         
                         
                     } else{
-                        resultOutput.setText("Input a matrix with the right format!\nSeparate each number by a single space and begin each line with a number.\nInput a consistant and same number of rows and of columns for the matrix.\n");
+                        resultOutput.setText("");
+                        displayError.setText("Input a matrix with the right format!\nSeparate each number by a single space and begin each line with a number.\nInput a consistant and same number of rows and of columns for the matrix.\n");
                         clearButton.setEnabled(true);
                         saveButton.setEnabled(false);
                     }
@@ -380,17 +395,19 @@ public class ApplicationPanel extends JPanel {
 
                             double determinant = originalMatrix.getDeterminant();
                             resultOutput.append(determinant + "\n");
-
+                            displayError.setText("");
 
                             clearButton.setEnabled(true);
                             saveButton.setEnabled(true);
                         } else{
-                            resultOutput.setText("Zero pivot found for the lower and upper matrices!\nThe inverse does not exist!\n");
+                            resultOutput.setText("");
+                            displayError.setText("Zero pivot found for the lower and upper matrices!\nThe inverse does not exist!\n");
                             clearButton.setEnabled(true);
                             saveButton.setEnabled(false);
                         }
                     } else {
-                        resultOutput.setText("Input a matrix with the right format!\nSeparate each number by a single space and begin each line with a number.\nInput a consistant and same number of rows and of columns for the matrix.\n");
+                        resultOutput.setText("");
+                        displayError.setText("Input a matrix with the right format!\nSeparate each number by a single space and begin each line with a number.\nInput a consistant and same number of rows and of columns for the matrix.\n");
                         clearButton.setEnabled(true);
                         saveButton.setEnabled(false);
                     }
@@ -412,6 +429,11 @@ public class ApplicationPanel extends JPanel {
         class LoadActionListener implements ActionListener {
 	
 		public void actionPerformed(ActionEvent event) {
+                    try{
+                        myDataAccessor.load();
+                    } catch (IOException exc) {
+                        System.out.println("IOException caught in save(): "+exc);
+                    }
 		}
 	}
 	/**
@@ -434,7 +456,7 @@ public class ApplicationPanel extends JPanel {
                         saveButton.setEnabled(false);
                     } catch (IOException exc) {
                         System.out.println("IOException caught in save(): "+exc);
-		}
+                    }
                     
 		}
 	}
@@ -455,7 +477,7 @@ public class ApplicationPanel extends JPanel {
 		public void itemStateChanged(ItemEvent event) {
 			
 			if (event.getStateChange() == ItemEvent.SELECTED) {
-				populateListBox();
+				populateOutput();
 			}
 		}
 	}

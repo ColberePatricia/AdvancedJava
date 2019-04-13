@@ -17,7 +17,7 @@ public class AssignmentJavaProject {
     public static void main(String[] args) {
         
         MainFrame myFrame = new MainFrame();
-        myFrame.setSize(900, 800);
+        myFrame.setSize(900, 830);
 
 	myFrame.setVisible(true);
     }
