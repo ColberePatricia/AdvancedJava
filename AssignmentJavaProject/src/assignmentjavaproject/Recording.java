@@ -53,6 +53,15 @@ public class Recording implements Comparable {
                 name = dateFormat.format(date);
 		content = theContent;
 	}
+        
+        /**
+	 *  Constructs a recording w/ given parameter values
+	 */
+	public Recording(String theName, String theContent) {
+	
+                name = theName;
+		content = theContent;
+	}
 
 	//
 	//  GETTER / SETTER METHODS

@@ -83,29 +83,31 @@ public class ResultDataAccessor extends DataAccessor {
 		String line = "";
 
 		String resultName;
-                int numberOfLines;
 		String resultContent;
-		
 		try
 		{
 			log("Loading File: " + FILE_NAME + "...");
 			BufferedReader inputFromFile = new BufferedReader(new FileReader(FILE_NAME));
-			
+                        inputFromFile.readLine();
 			while ( (line = inputFromFile.readLine()) != null )
-			{			
+			{		
 				// create a tokenizer for a comma delimited line
 				st = new StringTokenizer(line, ",");
 		
 				//  Parse the info line to read the title
 				//
 				resultName = st.nextToken().trim();
+                               // log("\nres name: "+ resultName);
 						
 				// read the content
 				resultContent = readResultContent(inputFromFile);
+                                //st = new StringTokenizer(line, RECORD_SEPARATOR);
+                                //resultContent = st.nextToken().trim();
+                                log("\nres content: "+resultContent);
 
 				// create the music recording
-				myRecording = new Recording(resultContent);
-				
+				myRecording = new Recording(resultName, resultContent);
+				//log("\nresult name: "+resultName+" \nresult content: "+resultContent+"\n");
                                 
 				// check to see if we have information on this category
 				if (dataTable.containsKey(resultName)) {
@@ -167,13 +169,12 @@ public class ResultDataAccessor extends DataAccessor {
 		throws IOException
 	{
 		String resultContent = "";
-		
-		
-		//for (int i=0; i < numberOfLines; i++)
-		//{
-			resultContent += inputFromFile.readLine()+"\n";
-
-		//}	
+		String line = "";
+                line = inputFromFile.readLine();
+                while(!line.startsWith("---") && line!=null){
+                    resultContent += line+"\n";
+                    line = inputFromFile.readLine();
+                }
 		
 		return resultContent;
 	}
@@ -190,9 +191,7 @@ public class ResultDataAccessor extends DataAccessor {
 	 */
 	public void save() throws IOException {
 	
-	
-	// IMPORTANT:  REMOVE THE "BEGIN" COMMENT TAG ON THE LINE BELOW
-	
+		
 	
 		try {
 		
@@ -233,7 +232,7 @@ public class ResultDataAccessor extends DataAccessor {
 				//   To help get you started, the code for printing the artist name is already given.
 				//   
 				//
-				outputToFile.print(tempRecording.getName() + ", ");
+				outputToFile.print("\n"+tempRecording.getName() + ", \n");
 				outputToFile.print(tempRecording.getContent()+ "\n");
 				
 				// GIVEN:  Print the record separator
@@ -279,6 +278,46 @@ public class ResultDataAccessor extends DataAccessor {
 		log("getResults complete!\n");
 		
 		return results;		
+	}
+        
+        /**
+	 *  Adds a new recording to the data table in memory.  <p>
+	 *
+	 *  Note:  This method does not save the data to persistent storage (ie disk file).
+	 *
+	 *  @param theRecording the recording to add
+	 *
+	 *  @see save()
+	 */
+	public void addRecording(Recording theRecording) {
+
+		// get the category for this recording
+		String name = theRecording.getName();
+		
+		log("Adding recording to table memory:  " + theRecording.getName()+"\n");
+		
+		// get the list of recordings for this category
+		ArrayList resultArrayList;
+		if (dataTable.containsKey(name)) {
+				
+			// get the list of recordings for this category
+			resultArrayList = (ArrayList) dataTable.get(name); 					
+		}
+		else {
+				
+			// this is a new category.  simply add the category
+			// to our dataTable
+			resultArrayList = new ArrayList();
+			dataTable.put(name, resultArrayList);				
+		
+                }
+		// add this recording the list of recordings
+		resultArrayList.add(theRecording);
+		
+		// also, add it to our recentRecordingList
+		recentRecordingList.add(theRecording);
+		
+		log("addRecording() complete!\n");
 	}
         
 }

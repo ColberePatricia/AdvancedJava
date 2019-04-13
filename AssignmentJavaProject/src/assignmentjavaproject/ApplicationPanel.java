@@ -451,6 +451,13 @@ public class ApplicationPanel extends JPanel {
 
 		public void actionPerformed(ActionEvent event) {
                     try{
+                        ArrayList resultArrayList = myDataAccessor.getResultsList();
+                        
+                        String content = resultOutput.getText();
+			Recording theRecording = new Recording(content);
+			myDataAccessor.addRecording(theRecording);
+			resultComboBox.setSelectedItem(theRecording.getName());
+                        
                         myDataAccessor.save();
                         // If the result has been correctly saved, there is no need for now to use the save button again
                         saveButton.setEnabled(false);

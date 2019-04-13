@@ -97,9 +97,9 @@ public abstract class DataAccessor {
 	public void addRecording(Recording theRecording) {
 
 		// get the category for this recording
-		String category = theRecording.getCategory();
+		/*String name = theRecording.getName();
 		
-		log("Adding recording to table memory:  " + theRecording);
+		log("Adding recording to table memory:  " + theRecording.getContent());
 		
 		// get the list of recordings for this category
 		ArrayList recordingList = (ArrayList) dataTable.get(category);
@@ -110,7 +110,7 @@ public abstract class DataAccessor {
 		// also, add it to our recentRecordingList
 		recentRecordingList.add(theRecording);
 		
-		log("addRecording() complete!\n");
+		log("addRecording() complete!\n");*/
 	}
 
 	/**
