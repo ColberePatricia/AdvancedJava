@@ -6,7 +6,8 @@
 package assignmentjavaproject;
 
 /**
- *
+ * Class to show the main frame
+ * 
  * @author Patricia
  */
 public class AssignmentJavaProject {

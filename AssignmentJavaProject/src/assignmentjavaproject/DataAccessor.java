@@ -8,6 +8,7 @@ package assignmentjavaproject;
 import java.util.*;
 import java.io.*;
 /**
+ * Class to access the data in the database file
  *
  * @author Patricia
  */
@@ -16,7 +17,7 @@ public abstract class DataAccessor {
 	/**
 	 *  A HashMap/hashtable of the recordings.  
 	 *
-	 *  The key is the "category".
+	 *  The key is the "name".
 	 *
 	 *  The data stored for each key is an ArrayList which is
 	 *  the collection of recordings.
@@ -25,7 +26,7 @@ public abstract class DataAccessor {
 	protected HashMap dataTable;
 		
 	/**
-	 *  This hold a list of the recent recordings that have been added 
+	 *  This holds a list of the recent recordings that have been added 
 	 *  using the addRecording() method.
 	 *
 	 */
@@ -33,7 +34,7 @@ public abstract class DataAccessor {
 	 
 	 
 	 /**
-	  *  Default constructor.  Initializes the dataTable and recentRecordList
+	  *  Default constructor.  Initialises the dataTable and recentRecordList
 	  */
 	 public DataAccessor() {
 	 	dataTable = new HashMap();
@@ -42,7 +43,7 @@ public abstract class DataAccessor {
 	 
 	 
 	/**
-	 *  Returns a sorted list of the categories for the recordings.
+	 *  @return a sorted list of the names for the recordings.
 	 */
 	public ArrayList getResultName() {
 	
@@ -62,9 +63,9 @@ public abstract class DataAccessor {
 
 
 	/**
-	 *  Returns a list of recordings that match a given category
-	 *
 	 *  @param category the category for requested recordings.
+         * 
+         *  @return a list of recordings that match a given category
 	 */
 	public ArrayList getRecordings(String category) {
 	
@@ -126,6 +127,8 @@ public abstract class DataAccessor {
 	
 	/**
 	 *  Helper method for logging message to the console.
+         * 
+         *  @param msg the message to be logged to the console
 	 */
 	protected void log(Object msg) {
 	 	System.out.println("Data Accessor:  " + msg);

@@ -8,7 +8,8 @@ package assignmentjavaproject;
 import java.util.*;
 import java.io.*;
 /**
- *
+ * Class to access the results saved in the database and to add new ones
+ * 
  * @author Patricia
  */
 public class ResultDataAccessor extends DataAccessor {
@@ -25,15 +26,62 @@ public class ResultDataAccessor extends DataAccessor {
 	//
 	//  Here is a sample file with 2 results:
 	//
-	//    Will Smith, Big Willie Style, Hip-Hop, willsmith_bigwilliestyle.gif, 3
-	//    Intro, 184
-	//    Y'All Know, 328
-	//    Gettin' Jiggy Wit It, 215
-	//    ----------------------------
-	//    U2, The Best Of, Rock, u2_bestof.gif, 2
-	//    Pride (In The Name Of Love), 327
-	//    New Year's Day, 216
-	//    ----------------------------
+	//  
+	//  2019/04/14 00:11:51,
+	//  Matrix Inversion
+	//  Original matrix
+	//      11.0000000   22.0000000
+	//      56.0000000   37.0000000
+	//  
+	//  
+	//  
+	//  Lower matrix
+	//      1.0000000   0.0000000
+	//      0.1964286   1.0000000
+	//  
+	//  Upper matrix
+	//      56.0000000   37.0000000
+	//      0.0000000   14.7321429
+	//  
+	//  Inverse matrix
+	//      -0.0448485   0.0266667
+	//      0.0678788   -0.0133333
+	//  
+	//  
+	//  Determinant = -825.0
+	//  
+	//  ----------
+	//  
+	//  2019/04/14 00:12:45,
+	//  LU Decomposition with scaled partial pivoting
+	//  Original matrix
+	//      11.0000000   22.0000000   5.0000000
+	//      56.0000000   37.0000000   35.0000000
+	//      41.0000000   2.0000000   11.0000000
+	//  
+	//  
+	//  
+	//  Original vector
+	//      12.0000000   50.0000000   2.0000000
+	//  
+	//  
+	//  Lower matrix
+	//      1.0000000   0.0000000   0.0000000
+	//      0.7321429   1.0000000   0.0000000
+	//      0.1964286   -0.5871886   1.0000000
+	//  
+	//  Upper matrix
+	//      56.0000000   37.0000000   35.0000000
+	//      0.0000000   -25.0892857   -14.6250000
+	//      0.0000000   0.0000000   -10.4626335
+	//  
+	//  Solution
+	//      -0.4344218   0.3685714   1.7340136
+	//  
+	//  Determinant = 14700.0
+	//  
+	//  ----------
+
 	//
 	//
 	//  Note that each result is ended w/ a line separator.  The contents
@@ -64,7 +112,7 @@ public class ResultDataAccessor extends DataAccessor {
 	public ResultDataAccessor() throws IOException
 	{
 	
-		// now we can load the data into the table
+		// now we can load the data into the result output
 		load();
 	}
 	
@@ -94,30 +142,24 @@ public class ResultDataAccessor extends DataAccessor {
 				// create a tokenizer for a comma delimited line
 				st = new StringTokenizer(line, ",");
 		
-				//  Parse the info line to read the title
-				//
+				//  Parse the info line to read the name
 				resultName = st.nextToken().trim();
-                               // log("\nres name: "+ resultName);
 						
 				// read the content
 				resultContent = readResultContent(inputFromFile);
-                                //st = new StringTokenizer(line, RECORD_SEPARATOR);
-                                //resultContent = st.nextToken().trim();
-                                log("\nres content: "+resultContent);
 
 				// create the music recording
 				myRecording = new Recording(resultName, resultContent);
-				//log("\nresult name: "+resultName+" \nresult content: "+resultContent+"\n");
                                 
-				// check to see if we have information on this category
+				// check to see if we have information on this name
 				if (dataTable.containsKey(resultName)) {
 				
-					// get the list of recordings for this category
+					// get the list of recordings for this name
 					resultArrayList = (ArrayList) dataTable.get(resultName); 					
 				}
 				else {
 				
-					// this is a new category.  simply add the category
+					// this is a new name.  simply add the name
 					// to our dataTable
 					resultArrayList = new ArrayList();
 					dataTable.put(resultName, resultArrayList);				
@@ -156,13 +198,12 @@ public class ResultDataAccessor extends DataAccessor {
 	}
 	
 	/**
-	 *  Helper method for reading a given number of tracks from a Reader.
+	 *  Helper method for reading a content from a Reader.
 	 *
 	 *  @param inputFromFile the reader for the file we are reading
-	 *  @param numberOfTracks the number of tracks to read
 	 *
-	 *  @return an array of Tracks
-     *
+	 *  @return a content
+         *
 	 *  @exception IOException thrown if error occurs during IO
 	 */
 	protected String readResultContent(BufferedReader inputFromFile) 
@@ -197,24 +238,22 @@ public class ResultDataAccessor extends DataAccessor {
 		
 			log("Doing save...");
 
-			//  GIVEN:  temps
+			//  temps
 			Recording tempRecording = null;
 
 
-			//  TO DO: create a FileWriter for the file "result.db" and set append to true			
+			//  create a FileWriter for the file "result.db" and set append to true			
 			Boolean append = true;
                         FileWriter myFileWriter = new FileWriter("result.db", append);
 			
 			
 			
-			//  TO DO: create a PrintWriter based on the file writer and set autoflush to true			
-			//		   name the PrintWriter "outputToFile".			
+			//  create a PrintWriter based on the file writer and set autoflush to true	
 			boolean autoflush = true;
                         PrintWriter outputToFile = new PrintWriter(myFileWriter, autoflush);
 			
 			
 			
-			// GIVEN:  
 			//
 			// This while loop will only write out information for the new recordings
 			// that were added to the recentRecordingList.  The recentRecordingList
@@ -223,13 +262,13 @@ public class ResultDataAccessor extends DataAccessor {
 			Iterator iterator = recentRecordingList.iterator();		
 			while (iterator.hasNext()) {
 
-				// GIVEN:  Get's the next recording	and its track list		
+				// Gets the next recording and its content		
 				tempRecording = (Recording) iterator.next();
 
-				// TO DO:  Print output to the file using the file format
-				//         Artist, Title, Category, ImageName, NmberOfTracks 
-				//
-				//   To help get you started, the code for printing the artist name is already given.
+				//   Print output to the file using the file format
+                                //
+				//         name, 
+                                //         content
 				//   
 				//
 				outputToFile.print("\n"+tempRecording.getName() + ", \n");
@@ -239,7 +278,7 @@ public class ResultDataAccessor extends DataAccessor {
 				outputToFile.println(RECORD_SEPARATOR);
 			}
 			
-			// TO DO: close the output file
+			// close the output file
                         outputToFile.close();
 			
 			log("Save completed!");
@@ -255,14 +294,10 @@ public class ResultDataAccessor extends DataAccessor {
 			// throw it again so the caller is also informed of our problem
 			throw exc;
 		}
-	
-	// IMPORTANT:  REMOVE THE "END" COMMENT TAG ON THE LINE BELOW
-	
-	
 	}
         
         /**
-	 *  Returns a sorted list of the categories for the recordings.
+	 *  @return a sorted list of the categories for the recordings.
 	 */
 	public ArrayList getResultsList() {
 	
@@ -291,21 +326,21 @@ public class ResultDataAccessor extends DataAccessor {
 	 */
 	public void addRecording(Recording theRecording) {
 
-		// get the category for this recording
+		// get the name for this recording
 		String name = theRecording.getName();
 		
 		log("Adding recording to table memory:  " + theRecording.getName()+"\n");
 		
-		// get the list of recordings for this category
+		// get the list of recordings for this name
 		ArrayList resultArrayList;
 		if (dataTable.containsKey(name)) {
 				
-			// get the list of recordings for this category
+			// get the list of recordings for this name
 			resultArrayList = (ArrayList) dataTable.get(name); 					
 		}
 		else {
 				
-			// this is a new category.  simply add the category
+			// this is a new name, simply add the name
 			// to our dataTable
 			resultArrayList = new ArrayList();
 			dataTable.put(name, resultArrayList);				

@@ -45,8 +45,7 @@ public class MainFrame extends JFrame {
 	protected ApplicationPanel applicationPanel;
 	
 	/**
-	 *  This constructor creates the MusicPanel and VideoPanel.  These
-	 *  panels are added to a tabbed pane.
+	 *  This constructor creates the ApplicationPalnel.
 	 */
 	public MainFrame() {
 	
@@ -169,10 +168,14 @@ public class MainFrame extends JFrame {
 	
 	/**
 	 *  This class handles action events.  The event handler
-	 *  simply exists the program.
+	 *  simply exits the program.
 	 */	
 	class ExitActionListener implements ActionListener {
 	
+                /**
+                 * 
+                 * @param event  the event of exiting
+                 */
 		public void actionPerformed(ActionEvent event) {
 		
 			exit();
@@ -181,12 +184,14 @@ public class MainFrame extends JFrame {
 	
 	/**
 	 *  This class handles window closing event.  The event handler
-	 *  simply exists the program.
+	 *  simply exits the program.
 	 */
 	class WindowCloser extends WindowAdapter {
 
 		/**
 		 *  let's call our exit() method defined above  
+                 * 
+                 *  @param e the event of closing the window
 		 */
 		public void windowClosing(WindowEvent e) {
 
@@ -223,6 +228,10 @@ public class MainFrame extends JFrame {
 	 */
 	class LookAndFeelListener implements ActionListener {
 	
+                /**
+                 * 
+                 * @param event the event of changing the look and feel
+                 */
 		public void actionPerformed(ActionEvent event) {
 
 			// get the class name to load
@@ -247,6 +256,10 @@ public class MainFrame extends JFrame {
 	 */
 	 class AboutActionListener implements ActionListener {
 	 
+                /**
+                 * 
+                 * @param event the event on clicking on about
+                 */
 	 	public void actionPerformed(ActionEvent event) {
 			
 			String msg = "With this application you can do a LU pivot or find an inverse!\nYou can also save your results and load previous results!";

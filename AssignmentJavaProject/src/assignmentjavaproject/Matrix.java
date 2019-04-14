@@ -7,13 +7,27 @@ package assignmentjavaproject;
 import java.lang.Math.*;
 import java.text.DecimalFormat;
 /**
- *
+ * Class to handle the matrices: create them and modify them
+ * 
  * @author Patricia
  */
 public class Matrix {
+    /**
+     * The number of rows and columns of the matrix
+     */
     public int numRows, numCols;
+    /**
+     * The array of arrays representing the matrix with its values and indices
+     * matrix[i][j] is the value at the row i and column j
+     */
     public double [][] matrix;
     
+    /**
+     * Constructor of Matrix with the given parameters
+     * 
+     * @param myRows the number of rows of the matrix
+     * @param myCols  the number of columns of the matrix
+     */
     Matrix(int myRows, int myCols){
         numRows = myRows;
         numCols = myCols;
@@ -26,6 +40,11 @@ public class Matrix {
         }
     }
     
+    /**
+     * Constructor of Matrix with the given parameters
+     * 
+     * @param mySize the size of the matrix
+     */
     Matrix(int mySize){
         numRows = mySize;
         numCols = mySize;
@@ -38,6 +57,11 @@ public class Matrix {
         }
     }
     
+    /**
+     * Constructor of Matrix with the given parameters
+     * 
+     * @param myMatrix the matrix as a matrix object
+     */
     Matrix(Matrix myMatrix){
         numRows = myMatrix.numRows;
         numCols = myMatrix.numCols;
@@ -50,6 +74,11 @@ public class Matrix {
         }
     }
     
+    /**
+     * Constructor of Matrix with the given parameters
+     * 
+     * @param myMatrix the matrix as an array of arrays object
+     */
     Matrix(double [][] myMatrix){
         numRows = myMatrix.length;
         numCols = myMatrix[0].length;
@@ -62,6 +91,12 @@ public class Matrix {
         }
     }
     
+    /**
+     * Multiplies the current matrix with the one in parameter
+     * 
+     * @param myMatrix multiplied matrix with the current one
+     * @return the matrix result of the product
+     */
     public Matrix MultiplyMatrix(Matrix myMatrix){
         Matrix result;
         // If the matrix sizes do not match
@@ -85,6 +120,12 @@ public class Matrix {
         return result;
     }
     
+    /**
+     * Multiplies the current matrix with the given vector
+     * 
+     * @param myVector vector multiplied with the current matrix
+     * @return the vector resulting of the product
+     */
     public double[] MultiplyVector(double[] myVector){
         double[] result;
         // If the matrix and vector sizes do not match
@@ -107,6 +148,11 @@ public class Matrix {
         return result;
     }
     
+    /**
+     * Transpose the current matrix
+     * 
+     * @return the transposed matrix
+     */
     public Matrix Transpose(){
         Matrix result = new Matrix(numCols, numRows);
         
@@ -120,6 +166,12 @@ public class Matrix {
         return result;
     }
     
+    /**
+     * Checks the equality of the current matrix with the one given in parameter
+     * 
+     * @param myMatrix with which the current one is compared
+     * @return true if the matrices are equal, false if not
+     */
     public boolean Equals(Matrix myMatrix){
         // The matrices should have the same number of rows and columns
         if (numRows != myMatrix.numRows || numCols != myMatrix.numCols)
@@ -136,7 +188,13 @@ public class Matrix {
         return true;
     }
     
-    // Returns true if the matrix and vector have compatible formats
+    /**
+     * Checks if the current matrix has a compatible format for a product 
+     * with the given vector given in parameter
+     * 
+     * @param myVector vector to compare the format
+     * @return true if the formats are compatible, false if not
+     */
     public boolean areFormatsCompatible(double[] myVector){
         // If the matrix and vector sizes do not match
         if (numCols != myVector.length){
@@ -147,13 +205,23 @@ public class Matrix {
         return true;
     }
     
+    /**
+     * Print the given vector
+     * 
+     * @param vector vector to be printed
+     */
     public static void PrintVector(double[]vector){
             for (int i=0;i<vector.length;i++){
                 System.out.print(vector[i]+"   ");
             }
             System.out.println();
     }
-        
+      
+    /**
+     *¨Print the given matrix
+     * 
+     * @param myMatrix matrix to be printed
+     */
     public static void PrintMatrix(Matrix myMatrix){
             for (int i=0;i<myMatrix.numRows;i++){
                 PrintVector(myMatrix.matrix[i]);
@@ -161,6 +229,12 @@ public class Matrix {
             System.out.println();
     }
     
+    /**
+     * Gives a string from a vector
+     * 
+     * @param vector vector to be converted to string
+     * @return the string corresponding to the given vector
+     */
     public static String VectorToString(double [] vector){
         // We want a precision of 7 decimals
         DecimalFormat dc = new DecimalFormat("0.0000000");
@@ -172,6 +246,12 @@ public class Matrix {
         return result;
     }
     
+    /**
+     * Gives a string from a matrix
+     * 
+     * @param myMatrix matrix to be converted to string
+     * @return the string corresponding to the given matrix
+     */
     public static String MatrixToString(Matrix myMatrix){
         String result = "";
         for (int i=0;i<myMatrix.numRows;i++){
@@ -181,7 +261,12 @@ public class Matrix {
         return result;
     }
     
-    // We get an array of doubles from a string input in the GUI
+    /**
+     * Get the vector corresponding to a given string
+     * 
+     * @param vectorString string corresponding to a vector
+     * @return array of doubles corresponding to the string given as parameter
+     */
     public static double[] getVectorFromString(String vectorString){
         if (vectorString.length()==0){
             return new double[999];
@@ -194,7 +279,12 @@ public class Matrix {
         return result;
     }
     
-    // We get a matrix object from a string input in the GUI
+    /**
+     * Get the matrix corresponding to a given string
+     * 
+     * @param matrixString string corresponding to a matrix
+     * @return matrix object corresponding to the string given as parameter
+     */
     public static Matrix getMatrixFromString(String matrixString){
         Matrix myMatrix = new Matrix(999);
         if (matrixString.length()==0){
@@ -236,16 +326,34 @@ public class Matrix {
         return myMatrix;
     }
     
+    /**
+     * Gives the lower matrix from the LU pivot
+     * 
+     * @return the lower matrix
+     */
     public Matrix getLowerMatrix(){
         Matrix lowerMatrix = this.lu_fact()[0];
         return lowerMatrix;
     }
     
+    /**
+     * Gives the upper matrix from the LU pivot
+     * 
+     * @return the upper matrix
+     */
     public Matrix getUpperMatrix(){
         Matrix upperMatrix = this.lu_fact()[1];
         return upperMatrix;
     }
     
+    /**
+     * Get the LU pivot solution from the given parameters
+     * 
+     * @param lower lower matrix from the LU pivot
+     * @param upper upper matrix from the LU pivot
+     * @param vector vector to which the matrix is multiplied
+     * @return the solution to the LU pivot
+     */
     public double[] getLUsolution(Matrix lower, Matrix upper, double[] vector){
         double []solution = new double[this.numRows];
         double []temp = vector.clone();
@@ -270,6 +378,14 @@ public class Matrix {
         return solution;
     }
     
+    /**
+     * Get the inverse of the matrix corresponding to the given parameters
+     * 
+     * @param lower lower matrix given by the LU pivot
+     * @param upper upper matrix given by the LU pivot
+     * @param p P matrix corresponding to reordering the original matrix A
+     * @return the inverse of the original matrix A
+     */
     public Matrix getInverseMatrix(Matrix lower, Matrix upper, Matrix p){
         int n = this.numRows;
         Matrix inverse = new Matrix(n);
@@ -316,7 +432,14 @@ public class Matrix {
         return inverse;
     }
     
-    // Calculate a subArray from an array 
+    /**
+     * Get a subarray from an array of arrays
+     * 
+     * @param myMatrix array of arrays from which we get the subarray
+     * @param N size of myMatrix
+     * @param j1 size of the subarray
+     * @return the subarray
+     */
     public static double[][] generateSubArray (double myMatrix[][], int N, int j1){
             double[][] m;
             m = new double[N-1][];
@@ -335,7 +458,11 @@ public class Matrix {
             return m;
     }
     
-    // Recursive function to calculate the determinant of a matrix
+    /**
+     * Recursive method to calculate the determinant of the current matrix
+     * 
+     * @return the determinant
+     */
     public double getDeterminant(){
         int N = this.numRows;
         double determinant = 0;
@@ -363,7 +490,10 @@ public class Matrix {
     }
     
     
-    // Gives an array with the lower and the upper matrices from the LU factorisation
+    /**
+     * Do the LU factorisation for the current matrix
+     * @return an array containing two matrices: the lower and upper matrices
+     */
     public Matrix[] lu_fact(){
         // Our solution will contain first the lower matrix and second the upper matrix
         Matrix []solution = new Matrix[2];
@@ -413,10 +543,13 @@ public class Matrix {
         return solution;
     }
     
-    /*
+    /**
     * Computes the permutation matrix P such that the matrix PA can be
     * factorised into LU and the system PA = Pb can be solved by forward and 
-    * backward substitution. Output is the permutation matrix P
+    * backward substitution
+    * 
+    * @return the matrix permutation P 
+    * 
     */
     public Matrix reorder(){
         // If no pivot is found, we return an empty matrix of size 999

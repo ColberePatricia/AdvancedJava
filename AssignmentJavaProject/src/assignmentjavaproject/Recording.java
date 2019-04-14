@@ -8,7 +8,9 @@ import java.util.*;
 import java.text.*;
 
 /**
- *
+ * Class to create and handle the use of a recording, containing a result
+ * with a name and a content
+ * 
  * @author Patricia
  */
 public class Recording implements Comparable {
@@ -18,7 +20,7 @@ public class Recording implements Comparable {
 	//
 	
 	/**
-	 *  The recording title 
+	 *  The recording name 
 	 */
 	protected String name;
 	
@@ -41,11 +43,12 @@ public class Recording implements Comparable {
                 Date date = new Date();
                 name = dateFormat.format(date);
 	}
-
-	
-	/**
-	 *  Constructs a recording w/ given parameter values
-	 */
+        
+        /**
+         * 
+         * Constructs a recording w/ given parameter values
+         * @param theContent contains the content of the recording
+         */
 	public Recording(String theContent) {
 	
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -55,8 +58,11 @@ public class Recording implements Comparable {
 	}
         
         /**
-	 *  Constructs a recording w/ given parameter values
-	 */
+         * 
+         * Constructs a recording w/ given parameter values
+         * @param theName contains the name of the recording
+         * @param theContent contains the content of the recording
+         */
 	public Recording(String theName, String theContent) {
 	
                 name = theName;
@@ -68,14 +74,14 @@ public class Recording implements Comparable {
 	//
 	
 	/**
-	 *  Returns the recording title
+	 *  @return the recording name
 	 */
 	public String getName() {
 		return name;
 	}
 	
 	/**
-	 *  Sets the recording title
+	 *  @param theName the recording name
 	 */
 	public void setName(String theName) {
 		name = theName;
@@ -83,14 +89,14 @@ public class Recording implements Comparable {
 
 
 	/**
-	 *  Returns the content
+	 *  @return the content
 	 */
 	public String getContent() {
 		return content;
 	}
 	
 	/**
-	 *  Sets the recording price
+	 *  @param theContent the recording price
 	 */
 	public void setContent(String theContent) {
 		content = theContent;
@@ -98,6 +104,9 @@ public class Recording implements Comparable {
 
 	/** 
 	 *  Allow use to sort the recordings by name
+         *  
+         *  @param object the recording compared to the target name
+         *  @return the boolean comparing the names
 	 */
 	public int compareTo(Object object) {
 	
@@ -109,7 +118,7 @@ public class Recording implements Comparable {
         
         
 	/**
-	 *  Returns the content
+	 *  @return the content as a string
 	 */
 	public String toString() {
 		return content;

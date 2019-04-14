@@ -12,40 +12,42 @@ import java.awt.event.*;
 import java.io.IOException;
 import java.util.*;
 /**
- *
+ * Class to create the application panel in the main frame
+ * 
  * @author Patricia
  */
 public class ApplicationPanel extends JPanel {
         
+        /**
+         *  Labels for the matrix and vector inputs
+         */
         protected JLabel matrixLabel;
         protected JLabel vectorLabel;
 	
 	/**
-	 *  A panel to contain components.
+	 *  Five panels to contain components.
 	 */
 	protected JPanel topPanel;
-	/**
-	 *  A panel to contain components.
-	 */
 	protected JPanel middleTopPanel;
-	/**
-	 *  A panel to contain components.
-	 */
 	protected JPanel middleBottomPanel;
-	/**
-	 *  A panel to contain components.
-	 */
 	protected JPanel bottomPanel;
-        
 	protected JPanel bottomAndMiddleBottomPanel;
 
+        /**
+         *  Four scrollable panels
+         */
 	protected JScrollPane matrixScrollPane;
         protected JScrollPane vectorScrollPane;
 	protected JScrollPane resultScrollPane;
 	protected JScrollPane displayErrorScrollPane;
 	
 	/**
-	 *  Button labeled "Add"
+	 *  Button labeled respectively
+         *  "LU pivot"
+         *  "Inverse"
+         *  "Clear"
+         *  "Load"
+         *  "Save"
 	 */
 	protected JButton LUpivotButton;
 	protected JButton inverseButton;
@@ -68,7 +70,9 @@ public class ApplicationPanel extends JPanel {
 	 */
 	protected MainFrame parentFrame;
 
-        
+        /**
+         * Four text areas for inputing or outputing text
+         */
         protected JTextArea matrixInput;
         protected JTextArea vectorInput;
         protected JTextArea resultOutput;
@@ -76,7 +80,7 @@ public class ApplicationPanel extends JPanel {
         
 	
 	/**
-	 *  A reference music data accessor
+	 *  A reference result data accessor
 	 */
 	protected ResultDataAccessor myDataAccessor;
 
@@ -84,6 +88,9 @@ public class ApplicationPanel extends JPanel {
 	/**
 	 *  Creates the GUI components and arranges them
 	 *  in the container.
+         * 
+         *  @param theParentFrame frame containing this application panel
+         *  @return the application panel
 	 */
 	public ApplicationPanel(MainFrame theParentFrame) throws IOException{
 	
@@ -200,7 +207,6 @@ public class ApplicationPanel extends JPanel {
 		saveButton.addActionListener(new SaveActionListener());
 		resultComboBox.addItemListener(new GoItemListener());
                 
-                //matrixInput.getDocument().addDocumentListener(new MatrixInputDocumentListener(matrixInput));
 	
 		// state management
 		clearButton.setEnabled(false);
@@ -210,7 +216,7 @@ public class ApplicationPanel extends JPanel {
 
 	
 	/**
-	 *  Populate the list box w/ the categories
+	 *  Populate the output with the content of the result recording
 	 *
 	 *  <pre>
 	 *  
@@ -242,35 +248,15 @@ public class ApplicationPanel extends JPanel {
 		}
 	}
         
-        /*
-	class MatrixInputDocumentListener implements DocumentListener {
-            protected JTextArea jtext;
-            public MatrixInputDocumentListener(JTextArea myJtext) {
-                super();
-                jtext = myJtext;
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                System.out.println("REMOVING: "+jtext.getText());
-            }
-
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                System.out.println("INSERTING: "+jtext.getText());
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent arg0) {
-            }
-        }
-	*/
-        
 	/**
 	 *  When called, let's call the exit routine of the parent frame
 	 */
 	class ExitActionListener implements ActionListener {
 	
+                /**
+                 * 
+                 * @param event the event to exit the application
+                 */
 		public void actionPerformed(ActionEvent event) {
 
 			parentFrame.exit();
@@ -279,17 +265,15 @@ public class ApplicationPanel extends JPanel {
 	
         
 	/**
-	 *  When the "Clear" button is pressed, we will:
+	 *  When the "LU pivot" button is pressed, we will: give the appropriate result
 	 *
-	 *  <pre>
-	 *  
-	 *  1.  Clear the musicListBox
-	 *  2.  Set the first category item as selected
-	 *
-	 *  </pre>
 	 */
         class LUpivotActionListener implements ActionListener {
 	
+                /**
+                 * 
+                 * @param event click of the button "LU pivot"
+                 */
 		public void actionPerformed(ActionEvent event) {
                     // We calculate the LU pivot and we add our result to the output
                     resultOutput.setText("LU Decomposition with scaled partial pivoting\nOriginal matrix\n");
@@ -365,8 +349,17 @@ public class ApplicationPanel extends JPanel {
                     
 		}
 	}
+        
+        /**
+	 *  When the "Inverse" button is pressed, we will: give the appropriate result
+	 *
+	 */
         class InverseActionListener implements ActionListener {
 	
+                /**
+                 * 
+                 * @param event the "Inverse" button has been clicked
+                 */
 		public void actionPerformed(ActionEvent event) {
                     // We calculate the inverse and we add our result to the output
                     resultOutput.setText("Matrix Inversion\nOriginal matrix\n");
@@ -415,8 +408,17 @@ public class ApplicationPanel extends JPanel {
                     
 		}
 	}
+        
+        /**
+	 *  When the "Clear" button is pressed, we will: clear the output
+	 *
+	 */
         class ClearActionListener implements ActionListener {
 	
+            /**
+             * 
+             * @param event the "Clear" button has been clicked
+             */
 		public void actionPerformed(ActionEvent event) {
 
 			// clear the text in the result output
@@ -426,8 +428,17 @@ public class ApplicationPanel extends JPanel {
                         
 		}
 	}
+        
+        /**
+	 *  When the "Load" button is pressed, we will: output the loaded result
+	 *
+	 */
         class LoadActionListener implements ActionListener {
 	
+                /**
+                 * 
+                 * @param event the "Load" button has been clicked
+                 */
 		public void actionPerformed(ActionEvent event) {
                     try{
                         myDataAccessor.load();
@@ -449,6 +460,10 @@ public class ApplicationPanel extends JPanel {
 	 */
 	class SaveActionListener implements ActionListener {
 
+                /**
+                 * 
+                 * @param event the "Save" button has been clicked
+                 */
 		public void actionPerformed(ActionEvent event) {
                     try{
                         ArrayList resultArrayList = myDataAccessor.getResultsList();
@@ -469,68 +484,25 @@ public class ApplicationPanel extends JPanel {
 	}
 
 	/**
-	 *  When a category is selected, we will:
+	 *  When a name is selected, we will:
 	 *
 	 *  <pre>
 	 *
-	 *  1.  Find out the selected category from combo box
-	 *  2.  Get a list of CDs for the selected category from the data accessor
-	 *  3.  Populate the list box w/ the cd artist and titles
+	 *  1.  Find out the selected name from combo box
+	 *  2.  Get the result corresponding to the selected name
 	 *
 	 *  </pre>
 	 */	
 	class GoItemListener implements ItemListener {
 	
+                /**
+                 * 
+                 * @param event the name has been selected in the combobox
+                 */
 		public void itemStateChanged(ItemEvent event) {
-			
 			if (event.getStateChange() == ItemEvent.SELECTED) {
 				populateOutput();
 			}
 		}
 	}
-	
-	
-	
-	/**
-	 *  When the "Add..." button is pressed, we will:
-	 *
-	 *  <pre>
-	 *
-	 *  1.  Create an instance of the MusicEntryDialog.
-	 *  2.  Show this dialog
-	 *  3.  When the dialog returns, check if it's "Ok" button was pressed.
-	 *      3a.  If "Ok" button was pressed
-	 *           -  Get the music recording from the dialog
-	 *           -  Add this music recording to the data accessor
-	 *
-	 *  </pre>
-	 */
-	class EntryActionListener implements ActionListener {
-
-		public void actionPerformed(ActionEvent event) {
-		
-			/*ArrayList categoryArrayList = myDataAccessor.getCategories();
-
-			//
-			// TO DO:  Do your work here.
-			//
-			MusicEntryDialog myDialog = new MusicEntryDialog(parentFrame, categoryArrayList);
-			
-			myDialog.setVisible(true);
-			
-			if (myDialog.isOkButtonPressed()) {
-				
-				MusicRecording theRecording = myDialog.getMusicRecording();
-				
-				myDataAccessor.addRecording(theRecording);
-				
-				categoryComboBox.setSelectedItem(theRecording.getCategory());
-			}*/
-			
-		}	
-	}
-
-
-	
-
 }
