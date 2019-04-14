@@ -83,7 +83,11 @@ public class ApplicationPanel extends JPanel {
 	 *  A reference result data accessor
 	 */
 	protected ResultDataAccessor myDataAccessor;
-
+        
+        /**
+         * String containing the content of the output if the text is loaded
+         */
+        protected String loadedText;
 	
 	/**
 	 *  Creates the GUI components and arranges them
@@ -221,8 +225,8 @@ public class ApplicationPanel extends JPanel {
 	 *  <pre>
 	 *  
 	 *    1.  If the selected category is not equal to "----" then
-	 *        1a.  Get the music array list from data accessor
-	 *    2.  Else create an empty music array list
+	 *        1a.  Get the result array list from data accessor
+	 *    2.  Else the loaded text is empty
 	 *
 	 *    3.  If the list is not empty then enable "Clear" button
 	 *
@@ -232,20 +236,17 @@ public class ApplicationPanel extends JPanel {
 
 		String result = (String) resultComboBox.getSelectedItem();
 
-		if (! result.startsWith("---")) {
+		if (!result.startsWith("---")) {
 			resultArrayList = myDataAccessor.getRecordings(result);
-		}
-		else {
-			resultArrayList = new ArrayList(); 
-		}
+                        
+                        Object[] theData = resultArrayList.toArray();
+                        
+                        loadedText = ""+theData[0];
+		} else {
+                    loadedText="";
+                }
 
-		Object[] theData = resultArrayList.toArray();
-		resultOutput.setText(""+theData[0]);	
-				
-		// clear button is enabled if we have some data
-		if (resultArrayList.size() > 0) {
-			clearButton.setEnabled(true);
-		}
+		
 	}
         
 	/**
@@ -440,10 +441,12 @@ public class ApplicationPanel extends JPanel {
                  * @param event the "Load" button has been clicked
                  */
 		public void actionPerformed(ActionEvent event) {
-                    try{
-                        myDataAccessor.load();
-                    } catch (IOException exc) {
-                        System.out.println("IOException caught in save(): "+exc);
+                    resultOutput.setText(loadedText);
+                    // clear button is enabled if we have some data
+                    if (!loadedText.equals("")) {
+                        clearButton.setEnabled(true);
+                    } else{
+                        clearButton.setEnabled(false);
                     }
 		}
 	}
@@ -476,6 +479,10 @@ public class ApplicationPanel extends JPanel {
                         myDataAccessor.save();
                         // If the result has been correctly saved, there is no need for now to use the save button again
                         saveButton.setEnabled(false);
+                        
+                        // We add the new result to the combo box
+                        resultComboBox.addItem(theRecording.getName());
+                        
                     } catch (IOException exc) {
                         System.out.println("IOException caught in save(): "+exc);
                     }
