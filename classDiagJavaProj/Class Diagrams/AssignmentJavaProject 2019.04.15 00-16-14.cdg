@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="AssignmentJavaProject">
+  <ClassDiagramComponents>
+    <Class name="ApplicationPanel" package="assignmentjavaproject" visibility="public" xPosition="22.0" yPosition="19.0">
+      <Fields>
+        <Field name="matrixLabel" type="JLabel" visibility="protected"/>
+        <Field name="vectorLabel" type="JLabel" visibility="protected"/>
+        <Field name="topPanel" type="JPanel" visibility="protected"/>
+        <Field name="middleTopPanel" type="JPanel" visibility="protected"/>
+        <Field name="middleBottomPanel" type="JPanel" visibility="protected"/>
+        <Field name="bottomPanel" type="JPanel" visibility="protected"/>
+        <Field name="bottomAndMiddleBottomPanel" type="JPanel" visibility="protected"/>
+        <Field name="matrixScrollPane" type="JScrollPane" visibility="protected"/>
+        <Field name="vectorScrollPane" type="JScrollPane" visibility="protected"/>
+        <Field name="resultScrollPane" type="JScrollPane" visibility="protected"/>
+        <Field name="displayErrorScrollPane" type="JScrollPane" visibility="protected"/>
+        <Field name="LUpivotButton" type="JButton" visibility="protected"/>
+        <Field name="inverseButton" type="JButton" visibility="protected"/>
+        <Field name="clearButton" type="JButton" visibility="protected"/>
+        <Field name="loadButton" type="JButton" visibility="protected"/>
+        <Field name="saveButton" type="JButton" visibility="protected"/>
+        <Field name="resultArrayList" type="ArrayList" visibility="protected"/>
+        <Field name="resultComboBox" type="JComboBox" visibility="protected"/>
+        <Field name="parentFrame" type="MainFrame" visibility="protected"/>
+        <Field name="matrixInput" type="JTextArea" visibility="protected"/>
+        <Field name="vectorInput" type="JTextArea" visibility="protected"/>
+        <Field name="resultOutput" type="JTextArea" visibility="protected"/>
+        <Field name="displayError" type="JTextArea" visibility="protected"/>
+        <Field name="myDataAccessor" type="ResultDataAccessor" visibility="protected"/>
+        <Field name="loadedText" type="String" visibility="protected"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="MainFrame" name="theParentFrame"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="populateOutput" returnType="void" visibility="protected"/>
+      </Methods>
+    </Class>
+    <Class name="AssignmentJavaProject" package="assignmentjavaproject" visibility="public" xPosition="57.0" yPosition="693.0">
+      <Fields/>
+      <Constructors/>
+      <Methods>
+        <Method name="main" returnType="void" visibility="public" isStatic="true">
+          <Argument type="String[]" name="args"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="DataAccessor" package="assignmentjavaproject" visibility="public" isAbstract="true" xPosition="1056.0" yPosition="748.0">
+      <Fields>
+        <Field name="dataTable" type="HashMap" visibility="protected"/>
+        <Field name="recentRecordingList" type="ArrayList" visibility="protected"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="getResultName" returnType="ArrayList" visibility="public"/>
+        <Method name="getRecordings" returnType="ArrayList" visibility="public">
+          <Argument type="String" name="category"/>
+        </Method>
+        <Method name="addRecording" returnType="void" visibility="public">
+          <Argument type="Recording" name="theRecording"/>
+        </Method>
+        <Method name="load" returnType="void" visibility="public" isAbstract="true"/>
+        <Method name="save" returnType="void" visibility="public" isAbstract="true"/>
+        <Method name="log" returnType="void" visibility="protected">
+          <Argument type="Object" name="msg"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="MainFrame" package="assignmentjavaproject" visibility="public" xPosition="582.0" yPosition="38.0">
+      <Fields>
+        <Field name="applicationPanel" type="ApplicationPanel" visibility="protected"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="setupLookAndFeelMenu" returnType="void" visibility="protected">
+          <Argument type="JMenuBar" name="theMenuBar"/>
+        </Method>
+        <Method name="exit" returnType="void" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="Matrix" package="assignmentjavaproject" visibility="public" xPosition="354.0" yPosition="653.0">
+      <Fields>
+        <Field name="numRows" type="int" visibility="public"/>
+        <Field name="matrix" type="double[][]" visibility="public"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="package">
+          <Argument type="int" name="myRows"/>
+          <Argument type="int" name="myCols"/>
+        </Constructor>
+        <Constructor visibility="package">
+          <Argument type="int" name="mySize"/>
+        </Constructor>
+        <Constructor visibility="package">
+          <Argument type="Matrix" name="myMatrix"/>
+        </Constructor>
+        <Constructor visibility="package">
+          <Argument type="double[][]" name="myMatrix"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="MultiplyMatrix" returnType="Matrix" visibility="public">
+          <Argument type="Matrix" name="myMatrix"/>
+        </Method>
+        <Method name="MultiplyVector" returnType="double[]" visibility="public">
+          <Argument type="double[]" name="myVector"/>
+        </Method>
+        <Method name="Transpose" returnType="Matrix" visibility="public"/>
+        <Method name="Equals" returnType="boolean" visibility="public">
+          <Argument type="Matrix" name="myMatrix"/>
+        </Method>
+        <Method name="areFormatsCompatible" returnType="boolean" visibility="public">
+          <Argument type="double[]" name="myVector"/>
+        </Method>
+        <Method name="PrintVector" returnType="void" visibility="public" isStatic="true">
+          <Argument type="double[]" name="vector"/>
+        </Method>
+        <Method name="PrintMatrix" returnType="void" visibility="public" isStatic="true">
+          <Argument type="Matrix" name="myMatrix"/>
+        </Method>
+        <Method name="VectorToString" returnType="String" visibility="public" isStatic="true">
+          <Argument type="double[]" name="vector"/>
+        </Method>
+        <Method name="MatrixToString" returnType="String" visibility="public" isStatic="true">
+          <Argument type="Matrix" name="myMatrix"/>
+        </Method>
+        <Method name="getVectorFromString" returnType="double[]" visibility="public" isStatic="true">
+          <Argument type="String" name="vectorString"/>
+        </Method>
+        <Method name="getMatrixFromString" returnType="Matrix" visibility="public" isStatic="true">
+          <Argument type="String" name="matrixString"/>
+        </Method>
+        <Method name="getLowerMatrix" returnType="Matrix" visibility="public"/>
+        <Method name="getUpperMatrix" returnType="Matrix" visibility="public"/>
+        <Method name="getLUsolution" returnType="double[]" visibility="public">
+          <Argument type="Matrix" name="lower"/>
+          <Argument type="Matrix" name="upper"/>
+          <Argument type="double[]" name="vector"/>
+        </Method>
+        <Method name="getInverseMatrix" returnType="Matrix" visibility="public">
+          <Argument type="Matrix" name="lower"/>
+          <Argument type="Matrix" name="upper"/>
+          <Argument type="Matrix" name="p"/>
+        </Method>
+        <Method name="generateSubArray" returnType="double[][]" visibility="public" isStatic="true">
+          <Argument type="double" name="myMatrix"/>
+          <Argument type="int" name="N"/>
+          <Argument type="int" name="j1"/>
+        </Method>
+        <Method name="getDeterminant" returnType="double" visibility="public"/>
+        <Method name="lu_fact" returnType="Matrix[]" visibility="public"/>
+        <Method name="reorder" returnType="Matrix" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="Recording" package="assignmentjavaproject" visibility="public" xPosition="1099.0" yPosition="122.0">
+      <Fields>
+        <Field name="name" type="String" visibility="protected"/>
+        <Field name="content" type="String" visibility="protected"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+        <Constructor visibility="public">
+          <Argument type="String" name="theContent"/>
+        </Constructor>
+        <Constructor visibility="public">
+          <Argument type="String" name="theName"/>
+          <Argument type="String" name="theContent"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getName" returnType="String" visibility="public"/>
+        <Method name="setName" returnType="void" visibility="public">
+          <Argument type="String" name="theName"/>
+        </Method>
+        <Method name="getContent" returnType="String" visibility="public"/>
+        <Method name="setContent" returnType="void" visibility="public">
+          <Argument type="String" name="theContent"/>
+        </Method>
+        <Method name="compareTo" returnType="int" visibility="public">
+          <Argument type="Object" name="object"/>
+        </Method>
+        <Method name="toString" returnType="String" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="ResultDataAccessor" package="assignmentjavaproject" visibility="public" xPosition="651.0" yPosition="315.0">
+      <Fields>
+        <Field name="FILE_NAME" type="String" visibility="protected" isStatic="true" isFinal="true"/>
+        <Field name="RECORD_SEPARATOR" type="String" visibility="protected" isStatic="true" isFinal="true"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="load" returnType="void" visibility="public"/>
+        <Method name="readResultContent" returnType="String" visibility="protected">
+          <Argument type="BufferedReader" name="inputFromFile"/>
+        </Method>
+        <Method name="save" returnType="void" visibility="public"/>
+        <Method name="getResultsList" returnType="ArrayList" visibility="public"/>
+        <Method name="addRecording" returnType="void" visibility="public">
+          <Argument type="Recording" name="theRecording"/>
+        </Method>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations/>
+</ClassDiagram>
